@@ -1,0 +1,45 @@
+From e4f26edc1c1bb999b12df83f41459fe7174bef29 Mon Sep 17 00:00:00 2001
+From: Craig Scott <craig.scott@crascit.com>
+Date: Fri, 7 Apr 2023 18:21:27 +1000
+Subject: [PATCH 3/5] Tests: Always load presets schema as UTF-8
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+We know the encoding of the schema file, so we should specify it
+when we open it for reading. Previously, by not specifying it, the test
+was open to using an encoding based on the active locale when
+running the test. We may have been enforcing a "C" locale at a higher
+level, but we don't need to rely on that here, we can force correct
+behavior without that assumption.
+
+Issue: #24679
+Signed-off-by: Björn Esser <besser82@fedoraproject.org>
+---
+ Tests/RunCMake/CMakePresets/validate_schema.py | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/Tests/RunCMake/CMakePresets/validate_schema.py b/Tests/RunCMake/CMakePresets/validate_schema.py
+index b2a67fc4b9..836147aab2 100644
+--- a/Tests/RunCMake/CMakePresets/validate_schema.py
++++ b/Tests/RunCMake/CMakePresets/validate_schema.py
+@@ -4,13 +4,13 @@ import os.path
+ import sys
+ 
+ 
+-with open(sys.argv[1], "rb") as f:
+-    contents = json.loads(f.read().decode("utf-8-sig"))
++with open(sys.argv[1], "r", encoding="utf-8-sig") as f:
++    contents = json.load(f)
+ 
+ schema_file = os.path.join(
+         os.path.dirname(__file__),
+         "..", "..", "..", "Help", "manual", "presets", "schema.json")
+-with open(schema_file) as f:
++with open(schema_file, "r", encoding="utf-8") as f:
+     schema = json.load(f)
+ 
+ jsonschema.validate(contents, schema)
+-- 
+2.40.1
+

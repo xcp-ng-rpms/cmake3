@@ -1,0 +1,44 @@
+From fc2b60ca6b23a7204043075e0c04a727d5b6a06b Mon Sep 17 00:00:00 2001
+From: Craig Scott <craig.scott@crascit.com>
+Date: Fri, 7 Apr 2023 18:14:18 +1000
+Subject: [PATCH 2/5] Sphinx: Modernize UTF-8 encoding handling when updating
+ CMake.qhp
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Björn Esser <besser82@fedoraproject.org>
+---
+ Utilities/Sphinx/create_identifiers.py | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/Utilities/Sphinx/create_identifiers.py b/Utilities/Sphinx/create_identifiers.py
+index 0ff39a0c2a..61dd819b42 100755
+--- a/Utilities/Sphinx/create_identifiers.py
++++ b/Utilities/Sphinx/create_identifiers.py
+@@ -6,12 +6,12 @@ if len(sys.argv) != 2:
+   sys.exit(-1)
+ name = sys.argv[1] + "/CMake.qhp"
+ 
+-f = open(name, "rb")
++f = open(name, "r", encoding="utf-8")
+ 
+ if not f:
+   sys.exit(-1)
+ 
+-lines = f.read().decode("utf-8").splitlines()
++lines = f.read().splitlines()
+ 
+ if not lines:
+   sys.exit(-1)
+@@ -47,5 +47,5 @@ for line in lines:
+         line = part1 + prefix + "id=\"" + domain_object_type + "/" + domain_object + "\" " + part2
+   newlines.append(line + "\n")
+ 
+-f = open(name, "wb")
+-f.writelines(map(lambda line: line.encode("utf-8"), newlines))
++f = open(name, "w", encoding="utf-8")
++f.writelines(newlines)
+-- 
+2.40.1
+

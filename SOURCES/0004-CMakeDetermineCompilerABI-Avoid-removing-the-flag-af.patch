@@ -1,0 +1,38 @@
+From cec6f980181d9ca88ff53f0b1626713ed98a3369 Mon Sep 17 00:00:00 2001
+From: Raul Tambre <raul@tambre.ee>
+Date: Mon, 29 May 2023 17:18:55 +0300
+Subject: [PATCH 4/5] CMakeDetermineCompilerABI: Avoid removing the flag after
+ -Werror
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The matching became too eager after commit 079ea66468
+(CMakeDetermineCompilerABI: Handle NVCC-style -Werror flags, 2020-10-04,
+v3.19.0-rc1~45^2). When -Werror was specified without a value we would
+eat the following flag. Prevent this by disallowing "-" as the first
+character of the flag's value.
+
+Fixes: 079ea66468a6ffe0b02c3d6622bc0230fdf455b0
+See-also: https://discourse.cmake.org/t/8230
+Signed-off-by: Björn Esser <besser82@fedoraproject.org>
+---
+ Modules/CMakeDetermineCompilerABI.cmake | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Modules/CMakeDetermineCompilerABI.cmake b/Modules/CMakeDetermineCompilerABI.cmake
+index 3fd54cc7ef..df177968c3 100644
+--- a/Modules/CMakeDetermineCompilerABI.cmake
++++ b/Modules/CMakeDetermineCompilerABI.cmake
+@@ -42,7 +42,7 @@ function(CMAKE_DETERMINE_COMPILER_ABI lang src)
+     __TestCompiler_setTryCompileTargetType()
+ 
+     # Avoid failing ABI detection on warnings.
+-    string(REGEX REPLACE "(^| )-Werror([= ][^ ]*)?( |$)" " " CMAKE_${lang}_FLAGS "${CMAKE_${lang}_FLAGS}")
++    string(REGEX REPLACE "(^| )-Werror([= ][^-][^ ]*)?( |$)" " " CMAKE_${lang}_FLAGS "${CMAKE_${lang}_FLAGS}")
+ 
+     # Save the current LC_ALL, LC_MESSAGES, and LANG environment variables
+     # and set them to "C" that way GCC's "search starts here" text is in
+-- 
+2.40.1
+

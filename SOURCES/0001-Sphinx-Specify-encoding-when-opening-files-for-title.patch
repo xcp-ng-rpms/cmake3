@@ -1,0 +1,44 @@
+From 853f069103f00b3f487833787b5388c7e79ff3c3 Mon Sep 17 00:00:00 2001
+From: Craig Scott <craig.scott@crascit.com>
+Date: Fri, 7 Apr 2023 18:11:05 +1000
+Subject: [PATCH 1/5] Sphinx: Specify encoding when opening files for title
+ extraction
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+When the encoding is not specified, open() may choose an encoding
+based on the locale in use. That encoding may have no relationship
+to the encoding of the file being opened. Use the locale from the
+document settings instead, which should better match the file's
+encoding.
+
+Fixes: #24679
+Signed-off-by: Björn Esser <besser82@fedoraproject.org>
+---
+ Utilities/Sphinx/cmake.py | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/Utilities/Sphinx/cmake.py b/Utilities/Sphinx/cmake.py
+index 47e4909ba0..e4e06aba1a 100644
+--- a/Utilities/Sphinx/cmake.py
++++ b/Utilities/Sphinx/cmake.py
+@@ -224,12 +224,13 @@ class CMakeTransform(Transform):
+            The cmake --help-*-list commands also depend on this convention.
+            Return the title or False if the document file does not exist.
+         """
+-        env = self.document.settings.env
++        settings = self.document.settings
++        env = settings.env
+         title = self.titles.get(docname)
+         if title is None:
+             fname = os.path.join(env.srcdir, docname+'.rst')
+             try:
+-                f = open(fname, 'r')
++                f = open(fname, 'r', encoding=settings.input_encoding)
+             except IOError:
+                 title = False
+             else:
+-- 
+2.40.1
+
