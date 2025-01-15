@@ -17,7 +17,7 @@
 %bcond_with ncurses
 
 # Setting the Python-version used by default
-%bcond_without python3
+%bcond_with python3
 
 # Enable RPM dependency generators for cmake files written in Python
 %bcond_without rpm
@@ -74,7 +74,7 @@ Obsoletes:      cmake
 
 Name:           %{orig_name}%{?name_suffix}
 Version:        3.26.4
-Release: %{?xsrel}%{?dist}
+Release: %{?xsrel}.1%{?dist}
 Summary:        Cross-platform make system
 
 # most sources are BSD
@@ -409,6 +409,9 @@ popd
 
 
 %changelog
+* Wed Jan 15 2025 Thierry Escande <thierry.escande@vates.tech> - 3.26.4-3.1
+- Default to python 2 for XCP-ng 8.2 build
+
 * Fri Apr 12 2024 Bernhard Kaindl <bernhard.kaindl@cloud.com> - 3.26.4-3
 - CP-40289/XS8: Fix cmake3.rpm to provide and obsolete cmake to fix conflict
 * Fri Nov 10 2023 Bernhard Kaindl <bernhard.kaindl@cloud.com> - 3.26.4-2
