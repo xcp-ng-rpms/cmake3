@@ -67,14 +67,14 @@
 # Uncomment if building for EPEL/xs8:
 %if 0%{?xenserver} < 9
 %global name_suffix %%{major_version}
-Provides:       cmake
+#Provides:       cmake
 Obsoletes:      cmake
 %endif
 %global orig_name cmake
 
 Name:           %{orig_name}%{?name_suffix}
 Version:        3.26.4
-Release: %{?xsrel}.1%{?dist}
+Release: %{?xsrel}.0.tee.1%{?dist}
 Summary:        Cross-platform make system
 
 # most sources are BSD
