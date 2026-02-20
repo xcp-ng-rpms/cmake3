@@ -74,7 +74,7 @@ Obsoletes:      cmake
 
 Name:           %{orig_name}%{?name_suffix}
 Version:        3.26.4
-Release: %{?xsrel}.1%{?dist}
+Release: %{?xsrel}.1~XCPNG2710.1%{?dist}
 Summary:        Cross-platform make system
 
 # most sources are BSD
