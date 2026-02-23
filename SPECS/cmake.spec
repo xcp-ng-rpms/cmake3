@@ -74,7 +74,7 @@ Obsoletes:      cmake
 
 Name:           %{orig_name}%{?name_suffix}
 Version:        3.26.4
-Release: %{?xsrel}%{?dist}
+Release: %{?xsrel}.1%{?dist}
 Summary:        Cross-platform make system
 
 # most sources are BSD
@@ -409,6 +409,8 @@ popd
 
 
 %changelog
+* Mon Jan 19 2026 Philippe Coval <philippe.coval@vates.tech> - 3.26.4-3.1
+- Rebuild with openssl-3
 * Fri Apr 12 2024 Bernhard Kaindl <bernhard.kaindl@cloud.com> - 3.26.4-3
 - CP-40289/XS8: Fix cmake3.rpm to provide and obsolete cmake to fix conflict
 * Fri Nov 10 2023 Bernhard Kaindl <bernhard.kaindl@cloud.com> - 3.26.4-2
